@@ -1,0 +1,128 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+struct Process
+{
+    int id;
+    int at;        // Arrival Time
+    int bt;        // Burst Time
+    int rt;        // Remaining Time
+    int ct;        // Completion Time
+};
+
+int main()
+{
+    int n;
+
+    cout << "Nhap so tien trinh: ";
+    cin >> n;
+
+    Process p[100];
+
+    for (int i = 0; i < n; i++)
+    {
+        p[i].id = i + 1;
+
+        cout << "\nNhap thong tin P" << p[i].id << endl;
+
+        cout << "Arrival Time: ";
+        cin >> p[i].at;
+
+        cout << "Burst Time: ";
+        cin >> p[i].bt;
+
+        p[i].rt = p[i].bt;
+        p[i].ct = 0;
+    }
+
+
+    int time = 0;
+    int done = 0;
+
+    while (done < n)
+    {
+        int pos = -1;
+        int min = 99999;
+
+
+        // Tim tien trinh co Remaining Time nho nhat
+        for (int i = 0; i < n; i++)
+        {
+            if (p[i].at <= time &&
+                p[i].rt > 0 &&
+                p[i].rt < min)
+            {
+                min = p[i].rt;
+                pos = i;
+            }
+        }
+
+
+        // Neu chua co tien trinh nao den
+        if (pos == -1)
+        {
+            time++;
+        }
+        else
+        {
+            // Chay 1 don vi thoi gian
+            p[pos].rt--;
+            time++;
+
+
+            // Neu tien trinh hoan thanh
+            if (p[pos].rt == 0)
+            {
+                p[pos].ct = time;
+                done++;
+            }
+        }
+    }
+
+
+    cout << "\n\nKet qua:\n";
+
+    cout << setw(10) << "Process"
+         << setw(10) << "AT"
+         << setw(10) << "BT"
+         << setw(10) << "CT"
+         << setw(10) << "TAT"
+         << setw(10) << "WT"
+         << endl;
+
+
+    float tongWT = 0;
+    float tongTAT = 0;
+
+
+    for (int i = 0; i < n; i++)
+    {
+        int tat = p[i].ct - p[i].at;
+        int wt = tat - p[i].bt;
+
+
+        tongWT += wt;
+        tongTAT += tat;
+
+
+        cout << setw(10) << p[i].id
+             << setw(10) << p[i].at
+             << setw(10) << p[i].bt
+             << setw(10) << p[i].ct
+             << setw(10) << tat
+             << setw(10) << wt
+             << endl;
+    }
+
+
+    cout << "\nThoi gian cho trung binh: "
+         << tongWT / n;
+
+
+    cout << "\nThoi gian quay vong trung binh: "
+         << tongTAT / n;
+
+
+    return 0;
+}
