@@ -5,10 +5,10 @@ using namespace std;
 struct Process
 {
     int id;
-    int at;        // Arrival Time
-    int bt;        // Burst Time
-    int rt;        // Remaining Time
-    int ct;        // Completion Time
+    int at;        
+    int bt;        
+    int rt;        
+    int ct;        
 };
 
 int main()
@@ -46,7 +46,6 @@ int main()
         int min = 99999;
 
 
-        // Tim tien trinh co Remaining Time nho nhat
         for (int i = 0; i < n; i++)
         {
             if (p[i].at <= time &&
@@ -59,19 +58,15 @@ int main()
         }
 
 
-        // Neu chua co tien trinh nao den
         if (pos == -1)
         {
             time++;
         }
         else
         {
-            // Chay 1 don vi thoi gian
             p[pos].rt--;
             time++;
 
-
-            // Neu tien trinh hoan thanh
             if (p[pos].rt == 0)
             {
                 p[pos].ct = time;
